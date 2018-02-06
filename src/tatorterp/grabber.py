@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 04.02.2018
 
@@ -100,6 +101,6 @@ class WikipdediaDEGrabber(object):
                 
         
         
-print (WikipdediaDEGrabber().episodes)
+#print (WikipdediaDEGrabber().episodes)
 
     
