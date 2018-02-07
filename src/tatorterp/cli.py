@@ -1,5 +1,17 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# tatorter
+# Copyright (C) 2018  Daniel Llin Ferrero
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 Created on 05.02.2018
 
@@ -24,7 +36,8 @@ logger.setLevel(logging.INFO)
 
 file_rename_pattern = "{episode_index:0>4}--{location}--{title}"
 
-if __name__ == "__main__":
+def start():
+    # get arguments
     home = expanduser("~")
     default_cache_path = "{}/.tatorter.cache".format(home)
     argparser = argparse.ArgumentParser()
@@ -34,33 +47,42 @@ if __name__ == "__main__":
         default=default_cache_path
         )
     argparser.add_argument(
+        "-r","--renew-cache",
+        help="force the cache file to be renewed, even it is not out-dated".format(default_cache_path),
+        action='store_true'
+        )
+    argparser.add_argument(
         "files",
         nargs=1
         )
-    
     args = argparser.parse_args()
     
+    # options, not configurable
     cache_days = 1
-    cache_path = Path(args.cache)
     
+    cache_path = Path(args.cache)
     cache_used = False
     episodes = None
     
-    if cache_path.is_file():
-        last_modified_date = datetime.fromtimestamp(os.path.getmtime(cache_path))
-        now = datetime.now()
-        if (now - last_modified_date).days < cache_days:
-            cache_used = True
-            logging.info("Loading cache...")
-            with open(cache_path,mode="r",encoding="utf-8") as cache_file:
-                cache = json.load(cache_file)
-                episodes = []
-                for e in cache:
-                    episodes.append(Episode(**e))
-        else:
-            logger.info("Cache out-dated. ({} days)".format((now - last_modified_date).days))
+    # handle cache, load data (from cache or Wikipdeia)
+    if args.renew_cache:
+        logger.info("Forcing cache update.")
     else:
-        logger.info("No cache file.")
+        if cache_path.is_file():
+            last_modified_date = datetime.fromtimestamp(os.path.getmtime(cache_path))
+            now = datetime.now()
+            if (now - last_modified_date).days < cache_days:
+                cache_used = True
+                logging.info("Loading cache...")
+                with open(cache_path,mode="r",encoding="utf-8") as cache_file:
+                    cache = json.load(cache_file)
+                    episodes = []
+                    for e in cache:
+                        episodes.append(Episode(**e))
+            else:
+                logger.info("Cache out-dated. ({} days)".format((now - last_modified_date).days))
+        else:
+            logger.info("No cache file.")
     if not cache_used:
         logging.info("Fetching online data...")
         episodes = WikipdediaDEGrabber().episodes
@@ -68,9 +90,11 @@ if __name__ == "__main__":
         with open(cache_path,mode="w",encoding="utf-8") as cache_file:
             json.dump([episode.as_dict for episode in episodes], cache_file)
     
+    # identify files to process
     assert len(args.files) == 1
-    
     files = glob.glob(args.files[0])
+    
+    # handle each file separately
     options_count = 5
     for file in files:
         matcher = Matcher(file, episodes)
@@ -79,7 +103,7 @@ if __name__ == "__main__":
         target_extension = os.path.splitext(file)[1]
         target_names = []
         print ("="*80)
-        print ("Choose new file name for file {}".format(source_file)) 
+        print ("Choose new name for \"{}\"".format(source_file)) 
         for ix in range(options_count):
             match = matcher.match_list[ix]
             target_name = file_rename_pattern.format(**(match[1].as_dict)) + target_extension
@@ -113,12 +137,10 @@ if __name__ == "__main__":
             print ("Moved to {}".format(full_target_name))
         except IOError as e:
             print("File could not be copied ({0}): {1}".format(e.errno, e.strerror))   
-                
-                                       
-        
-        
-            
-            
-            
-            
-            
+        print ("")
+
+
+if __name__ == "__main__":
+    start()
+    
+    
