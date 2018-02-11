@@ -27,7 +27,7 @@ setup(
     author='DLFW',
     package_dir={'': 'src'},
     packages=find_packages('src'),
-    install_requires=['fuzzywuzzy','python-Levenshtein','mechanicalsoup'],
+    install_requires=['fuzzywuzzy','python-Levenshtein','mechanicalsoup','pathlib'],
     license='GPL 3',
     scripts=['scripts/tatorter','scripts/tatorter.py'],
     classifiers=[

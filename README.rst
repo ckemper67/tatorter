@@ -3,10 +3,12 @@ tatorter
 ========
 
 “tatorter” is a simple script to rename video files of the German police crime drama television series “Tatort” to a standardized file name format.
-That makes it a lot easier to archive local copies of the episodes which may come from various sources with different and/ore insufficient naming schemes.
-The used information like episode indexes and detective team is fetched from the list of episodes on the German Wikipedia.
-For each video file to rename, tatorter uses a heuristic with some fuzzy string matching to find the 5 best fitting episodes and to rename the file
-according to the users choice. 
+That makes it a lot easier to archive local copies of the episodes which may come from various sources with different and/or insufficient naming schemes.
+The used information such as episode indexes and detective team is fetched from the list of episodes on the German Wikipedia.
+For each video file to be renamed, tatorter uses an easy heuristic with some fuzzy string matching to find the 5 best fitting episodes and to rename the file
+according to the user’s choice.
+
+tatorter depends on Python 3 and can be installed with *pip*.
 
 Since tatorter can handle only the original German episode names, the rest of this documentation is also written in German. :)
 
@@ -41,8 +43,20 @@ Dabei wir je ein Index (hier von 1 bis 5), eine Trefferquote (als Prozentangabe)
 Verwendung
 ==========
 
+„tatorter“ benötigt Python 3. Die Installation kann mit *pip* vorgenommen werden (``pip3 install tatorter``).
+
+.. NOTE::
+
+    Für **Linux** gilt: Wird ein Paket nicht als „root“ installiert, kann es je nach Distribution sein,
+    dass das Python-Skript später nicht direkt aufgerufen kann.
+    
+    Für **Windows** relevant: Es steht neben dem Skript ``tatorter`` auch ein identisches Skript mit
+    dem Namen ``tatorter.py`` zur Verfügung, welches auch für Windows als Python3-Skript zu erkennen ist,
+    sofern die Dateiendung mit dem Python3-Interpreter verknüpft ist.
+
 „tatorter“ wird als Python-Skript installiert und kann damit typischerweise systemweit aufgerufen werde.
 Als einziges notwendiges Argument muss ein Dateiname oder ein „Globbing“-Dateinamenmuster mit „*“ und „?“ und „[...]“ als Platzhaltern.
+Etwa ``tatorter Schwanensee\ Tatort\ Video\ ARD\ Mediathek.mp4`` oder ``tatorter *.mp4``.
 
 Für alle passenden Dateien werden anschließend Namensvorschläge ermittelt. Die besten fünf Treffer stehen dann jeweils zur Auswahl.
 
@@ -73,6 +87,7 @@ Insgesamt stehen die folgenden Variablen für das Namensschema zur Verfügung:
 * ``author``: Autor der Episode
 * ``director``: Regisseur der Episode
 
+GitHub-Seite: https://github.com/DLFW/tatorter
 
 .. _`Liste der Tatort-Folgen`: https://de.wikipedia.org/wiki/Liste_der_Tatort-Folgen
 
