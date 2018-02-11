@@ -63,7 +63,8 @@ team_to_location = {
     "Sieland, Gorniak, Mohr und Schnabel":"Dresden",
     "Berlinger":"Freiburg",
     "Borowski /Lindholm":"Kiel-Hannover",
-    "Stark":"Berlin"
+    "Stark":"Berlin",
+    "Schimanski und Thanner":"Duisburg"
     }
 
 class WikipdediaDEGrabber(object):
