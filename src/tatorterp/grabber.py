@@ -56,6 +56,14 @@ team_to_location = {
     "Kappl und Deininger":"Saarbrücken",
     "Saalfeld und Keppler /Ballauf und Schenk":"Leipzig-Köln",
     "Ballauf und Schenk /Saalfeld und Keppler":"Köln-Leipzig",
+    "Tschiller und Gümer":"Hamburg",
+    "Falke und Lorenz":"Hamburg",
+    "Funck, Schaffert und Grewel":"Erfurt",
+    "Steier":"Frankfurt",
+    "Sieland, Gorniak, Mohr und Schnabel":"Dresden",
+    "Berlinger":"Freiburg",
+    "Borowski /Lindholm":"Kiel-Hannover",
+    "Stark":"Berlin"
     }
 
 class WikipdediaDEGrabber(object):
@@ -94,7 +102,6 @@ class WikipdediaDEGrabber(object):
                 location = "[{}]".format(team)
             else:
                 location = team_to_location[team]
-            print (episode_index)
             episode = Episode(
                 episode_index = episode_index,
                 location = location,

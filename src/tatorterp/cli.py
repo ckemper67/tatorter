@@ -34,7 +34,7 @@ logger = logging.getLogger("tatorter")
 logging.basicConfig()
 logger.setLevel(logging.INFO)
 
-file_rename_pattern = "{episode_index:0>4}--{location}--{title}"
+file_rename_pattern = "{episode_index:0>4}--{location}--{title}--({team})"
 
 def start():
     # get arguments
@@ -107,6 +107,7 @@ def start():
         for ix in range(options_count):
             match = matcher.match_list[ix]
             target_name = file_rename_pattern.format(**(match[1].as_dict)) + target_extension
+            target_name.replace("/","⁄")
             target_names.append(target_name)
             print ("–"*80 + "\n" + "{ix:>5} {match:>6}| {target_name}".format(
                 ix=ix+1,
