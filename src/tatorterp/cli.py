@@ -53,7 +53,7 @@ def start():
         )
     argparser.add_argument(
         "files",
-        nargs=1
+        nargs='*'
         )
     args = argparser.parse_args()
     
@@ -91,8 +91,9 @@ def start():
             json.dump([episode.as_dict for episode in episodes], cache_file)
     
     # identify files to process
-    assert len(args.files) == 1
-    files = glob.glob(args.files[0])
+    files = []
+    for f in args.files:
+        files.extend(glob.glob(f))
     
     # handle each file separately
     options_count = 5
@@ -107,7 +108,7 @@ def start():
         for ix in range(options_count):
             match = matcher.match_list[ix]
             target_name = file_rename_pattern.format(**(match[1].as_dict)) + target_extension
-            target_name.replace("/","⁄")
+            target_name = target_name.replace("/","⁄")
             target_names.append(target_name)
             print ("–"*80 + "\n" + "{ix:>5} {match:>6}| {target_name}".format(
                 ix=ix+1,

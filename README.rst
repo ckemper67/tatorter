@@ -8,10 +8,14 @@ The used information such as episode indexes and detective team is fetched from 
 For each video file to be renamed, tatorter uses an easy heuristic with some fuzzy string matching to find the 5 best fitting episodes and to rename the file
 according to the user’s choice.
 
+GitHub page: https://github.com/DLFW/tatorter
+
 tatorter depends on Python 3 and can be installed with *pip*.
 
 Since tatorter can handle only the original German episode names, the rest of this documentation is also written in German. :)
 
+Deutsch
+=======
 
 „tatorter“ ist einfaches Skript um lokale Videodateien der Serie „Tatort“ automatisch umzubenennen und so ein ein einheitliches Dateinamensschema für alle Videos zu erhalten.
 Das macht die Archivierung einfacher und erhöht die Übersichtlichkeit der Sammlung.
@@ -20,7 +24,7 @@ Für jede Videodatei, die umbenannt werden soll, ermittelt tatorter die fünf be
 den passenden Treffer aus.
  
 Erhält man Tatort-Videos beispielsweise aus der ARD-Mediathek, haben diese oft Namen wie ``Tatort Auf einen Schlag MDR Fernsehen Video ARD Mediathek.mp4``.
-tatorter würde für diese Datei etwa folgende Umbennennungsvorschläge machen:
+tatorter würde für diese Datei etwa folgende Umbenennungsvorschläge machen:
 
 .. code-block::
 
@@ -38,12 +42,15 @@ tatorter würde für diese Datei etwa folgende Umbennennungsvorschläge machen:
        5  (51%)| 0391--[Ehrlicher und Kain]--Tanz auf dem Hochseil--(Ehrlicher und Kain).mp4
    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-Dabei wir je ein Index (hier von 1 bis 5), eine Trefferquote (als Prozentangabe) und der zur Wahl stehende neue Dateiname angezeigt.
+Dabei wird je ein Index (hier von 1 bis 5), eine Trefferquote (als Prozentangabe) und der zur Wahl stehende neue Dateiname angezeigt.
 
 Verwendung
 ==========
 
 „tatorter“ benötigt Python 3. Die Installation kann mit *pip* vorgenommen werden (``pip3 install tatorter``).
+
+Das Skript ist nur unter Linux getestet. Durch die Windows-Dateisysteme werden unter Windows viele Umbenennungen fehlschlagen, da viele
+Tator-Titel Zeichen enthalten, die unter Windows nicht in Dateinamen erlaubt sind.
 
 .. NOTE::
 
@@ -55,7 +62,7 @@ Verwendung
     sofern die Dateiendung mit dem Python3-Interpreter verknüpft ist.
 
 „tatorter“ wird als Python-Skript installiert und kann damit typischerweise systemweit aufgerufen werde.
-Als einziges notwendiges Argument muss ein Dateiname oder ein „Globbing“-Dateinamenmuster mit „*“ und „?“ und „[...]“ als Platzhaltern.
+Die umzubenennenen Dateien müssen mit Dateinamen oder „Globbing“-Dateinamenmuster mit „*“ und „?“ und „[...]“ als Platzhaltern als Argument übergeben werden.
 Etwa ``tatorter Schwanensee\ Tatort\ Video\ ARD\ Mediathek.mp4`` oder ``tatorter *.mp4``.
 
 Für alle passenden Dateien werden anschließend Namensvorschläge ermittelt. Die besten fünf Treffer stehen dann jeweils zur Auswahl.
@@ -91,7 +98,7 @@ GitHub-Seite: https://github.com/DLFW/tatorter
 
 .. _`Liste der Tatort-Folgen`: https://de.wikipedia.org/wiki/Liste_der_Tatort-Folgen
 
-tatorter steht unter der `GNU General Public License`, version 3 (GPL 3).
+tatorter steht unter der `GNU General Public License`, Version 3 (GPL 3).
 
 +--------------------------------------------------------------------------------------+
 | tatorter is a free and open project, you can redistribute it and/or modify           |
