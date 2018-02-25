@@ -19,10 +19,14 @@ Created on 27.11.2017
 from setuptools import setup
 from setuptools import find_packages
 
+with open ("README.rst", "r") as aboutfile:
+    about = aboutfile.read()
+
+
 
 setup(
     name='tatorter',
-    version='0.1',
+    version='0.1.1',
     description='A simple script to rename Tatort episode video files to a unique pattern.',
     author='DLFW',
     package_dir={'': 'src'},
@@ -31,8 +35,8 @@ setup(
     license='GPL 3',
     scripts=['scripts/tatorter','scripts/tatorter.py'],
     classifiers=[
-        'Development Status :: early but stable',
         'Environment :: Console',
-        'License :: GPL 3',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
     ],
+    long_description = about
 )
