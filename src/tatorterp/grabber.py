@@ -64,7 +64,9 @@ team_to_location = {
     "Berlinger":"Freiburg",
     "Borowski /Lindholm":"Kiel-Hannover",
     "Stark":"Berlin",
-    "Schimanski und Thanner":"Duisburg"
+    "Schimanski und Thanner":"Duisburg",
+    "Borowski":"Kiel",
+    "Odenthal und Stern":"Ludwigshafen"
     }
 
 class WikipdediaDEGrabber(object):
