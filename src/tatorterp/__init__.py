@@ -39,13 +39,18 @@ class Episode(object):
         broadcaster = self.broadcaster.lower()
         value = fuzz.partial_ratio(title, file_name)
         #max 100
+        value += (fuzz.ratio(file_name, title) / 5)
+        #max 120
         if broadcaster in file_name:
             value +=10
-        #max 110
+        #max 130
         if str(self.episode_index) in file_name:
             value += 5 * len(str(self.episode_index))
-        #max 130
-        value = int(100 * value / 130)
+        #max 150
+        if title in file_name:
+            value += 10
+        #max 160
+        value = int(100 * value / 160)
         return value  
         
     
