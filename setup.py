@@ -26,7 +26,7 @@ with open ("README.rst", "r") as aboutfile:
 
 setup(
     name='tatorter',
-    version='0.1.3',
+    version='0.1.4',
     description='A simple script to rename Tatort episode video files to a unique pattern.',
     author='DLFW',
     package_dir={'': 'src'},

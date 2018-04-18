@@ -62,6 +62,7 @@ team_to_location = {
     "Steier":"Frankfurt",
     "Sieland, Gorniak, Mohr und Schnabel":"Dresden",
     "Berlinger":"Freiburg",
+    "Berlinger und Rascher":"Freiburg",
     "Borowski /Lindholm":"Kiel-Hannover",
     "Stark":"Berlin",
     "Schimanski und Thanner":"Duisburg",
