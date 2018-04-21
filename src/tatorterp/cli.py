@@ -42,7 +42,7 @@ def start():
     # get arguments
     home = os.path.expanduser("~")
     default_cache_path = "{}/.tatorter.cache".format(home)
-    argparser = argparse.ArgumentParser()
+    argparser = argparse.ArgumentParser(fromfile_prefix_chars='@')
     argparser.add_argument(
         "-c","--cache",
         help="file for caching episode data (default: {})".format(default_cache_path),
