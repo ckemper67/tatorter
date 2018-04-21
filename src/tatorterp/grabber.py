@@ -84,11 +84,11 @@ class WikipdediaDEGrabber(object):
         self.episodes = []
         last_epsiode = None
         last_values = None
+        season = None
         for tr in trs[1:]:
             tds = tr.find_all('td')
             values = [td.text.split('(')[0].strip() for td in tds]
             episode_index = int(values[0].replace('a*','').replace('b*',''))
-            # some special treatments
             if episode_index == 835:
                 assert len(values) == 7
                 values[6] = last_epsiode.author
@@ -106,16 +106,24 @@ class WikipdediaDEGrabber(object):
                 location = "[{}]".format(team)
             else:
                 location = team_to_location[team]
+            # strip of trailing [footnote]
+            premiere = values[3].split('[')[0]
+            year = int(premiere[-4:])
+            if season != year:
+                season = year
+                first_episode = episode_index
             episode = Episode(
                 episode_index = episode_index,
                 location = location,
                 title = values[1],
                 broadcaster = values[2],
-                premiere = values[3],
+                premiere = premiere,
                 team = team,
                 case_index = values[5],
                 author = values[6],
-                director = values[7]
+                director = values[7],
+                episode = episode_index - first_episode + 1,
+                season = season
             )
             self.episodes.append(episode)
             last_epsiode = episode

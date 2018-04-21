@@ -34,7 +34,8 @@ logger = logging.getLogger("tatorter")
 logging.basicConfig()
 logger.setLevel(logging.INFO)
 
-file_rename_pattern = "{episode_index:0>4}--{location}--{title}--({team})"
+#file_rename_pattern = "[{episode_index:0>4}] - {location} -{title}"
+file_rename_pattern = "Tatort - {season}x{episode:0>2} - {team} - {case_index} - {title}"
 
 def start():
     # get arguments
@@ -69,12 +70,12 @@ def start():
         logger.info("Forcing cache update.")
     else:
         if cache_path.is_file():
-            last_modified_date = datetime.fromtimestamp(os.path.getmtime(cache_path))
+            last_modified_date = datetime.fromtimestamp(os.path.getmtime(str(cache_path)))
             now = datetime.now()
             if (now - last_modified_date).days < cache_days:
                 cache_used = True
                 logging.info("Loading cache...")
-                with open(cache_path,mode="r",encoding="utf-8") as cache_file:
+                with open(str(cache_path),mode="r",encoding="utf-8") as cache_file:
                     cache = json.load(cache_file)
                     episodes = []
                     for e in cache:
@@ -87,7 +88,7 @@ def start():
         logging.info("Fetching online data...")
         episodes = WikipdediaDEGrabber().episodes
         logger.info("Storing cache...")
-        with open(cache_path,mode="w",encoding="utf-8") as cache_file:
+        with open(str(cache_path),mode="w",encoding="utf-8") as cache_file:
             json.dump([episode.as_dict for episode in episodes], cache_file)
     
     # identify files to process
