@@ -93,6 +93,8 @@ Insgesamt stehen die folgenden Variablen für das Namensschema zur Verfügung:
 * ``case_index``: Fall-Nummer des jeweiligen Ermittlerteams
 * ``author``: Autor der Episode
 * ``director``: Regisseur der Episode
+* ``season``: Jahr der Erstausstrahlung
+* ``episode``: Laufende Episode im Jahr
 
 GitHub-Seite: https://github.com/DLFW/tatorter
 
