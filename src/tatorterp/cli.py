@@ -34,9 +34,9 @@ logger.setLevel(logging.INFO)
 
 # TVDB compatible naming pattern for use in Plex
 # Tatort - 2015x33 - Thiel und Boerne - 28 - Schwanensee.mp4
-file_rename_pattern_default = "Tatort - {season}x{episode:0>2} - {team} - {case_index} - {title}"
+#file_rename_pattern_default = "Tatort - {season}x{episode:0>2} - {team} - {case_index} - {title}"
 # 0978--Dresden--Auf einen Schlag--(Sieland, Gorniak, Mohr und Schnabel).mp4
-#file_rename_pattern_default = "{episode_index:0>4}--{location}--{title}"
+file_rename_pattern_default = "{episode_index:0>4}--{location}--{title}"
 
 def start():
     # get arguments
