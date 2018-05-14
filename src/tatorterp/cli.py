@@ -17,9 +17,7 @@ Created on 05.02.2018
 
 @author: DLF
 '''
-from os.path import expanduser
 from datetime import datetime
-from pathlib import Path
 from shutil import move
 import argparse
 import logging
@@ -34,13 +32,17 @@ logger = logging.getLogger("tatorter")
 logging.basicConfig()
 logger.setLevel(logging.INFO)
 
-file_rename_pattern = "{episode_index:0>4}--{location}--{title}--({team})"
+# TVDB compatible naming pattern for use in Plex
+# Tatort - 2015x33 - Thiel und Boerne - 28 - Schwanensee.mp4
+#file_rename_pattern_default = "Tatort - {season}x{episode:0>2} - {team} - {case_index} - {title}"
+# 0978--Dresden--Auf einen Schlag--(Sieland, Gorniak, Mohr und Schnabel).mp4
+file_rename_pattern_default = "{episode_index:0>4}--{location}--{title}"
 
 def start():
     # get arguments
-    home = expanduser("~")
+    home = os.path.expanduser("~")
     default_cache_path = "{}/.tatorter.cache".format(home)
-    argparser = argparse.ArgumentParser()
+    argparser = argparse.ArgumentParser(fromfile_prefix_chars='@')
     argparser.add_argument(
         "-c","--cache",
         help="file for caching episode data (default: {})".format(default_cache_path),
@@ -48,8 +50,15 @@ def start():
         )
     argparser.add_argument(
         "-r","--renew-cache",
-        help="force the cache file to be renewed, even it is not out-dated".format(default_cache_path),
+        help="force the cache file to be renewed, even it is not out-dated",
         action='store_true'
+        )
+    argparser.add_argument(
+        "-p","--pattern",
+        metavar="PATTERN",
+        type=str,
+        help="set the file rename pattern (default: '{}')".format(file_rename_pattern_default),
+        default=file_rename_pattern_default
         )
     argparser.add_argument(
         "files",
@@ -59,8 +68,9 @@ def start():
     
     # options, not configurable
     cache_days = 1
-    
-    cache_path = Path(args.cache)
+
+    file_rename_pattern = args.pattern
+    cache_path = os.path.abspath(args.cache)
     cache_used = False
     episodes = None
     
@@ -68,7 +78,7 @@ def start():
     if args.renew_cache:
         logger.info("Forcing cache update.")
     else:
-        if cache_path.is_file():
+        if os.path.isfile(cache_path):
             last_modified_date = datetime.fromtimestamp(os.path.getmtime(cache_path))
             now = datetime.now()
             if (now - last_modified_date).days < cache_days:
