@@ -71,12 +71,12 @@ Beim ersten Start  werden die notwendigen Information von der `Liste der Tatort-
 Ist dieser Cache älter als 24 Stunden wird er verworfen und die Daten erneut aus der Wikipedia bezogen.
 Mit der Option ``-c`` kann eine andere Cache-Datei gewählt werden.
 Die Option ``-r`` forciert ein Update des Cache, egal wann dieser zuletzt aktulaisiert wurde.
-Mit der Option ``-p`` kan ein anderes Namensschema gewählt werden.
+Mit der Option ``-p`` kann ein anderes Namensschema gewählt werden.
 
 Die Voreinstellung für das Namensschema lautet derzeit ``{episode_index:0>4}--{location}--{title}--({team})``, wobei ``location`` der Heimatstadt/-region des jeweiligen Ermittlerteams entspricht.
 Die Heimatstadt ist die einzige Information die nicht direkt aus der Wikipedia stammt, sondern anhand eines
 Mappings (``team_to_location`` in ``grabber.py``) aus dem Team abgeleitet wird. Derzeit sind alle Heimatstädte ab Episode 800 dort
-verzeichnet. Fehlen hier relevante „locations“, müssten diese ebenfalls händisch nachgetragen werden.
+verzeichnet. Fehlen hier relevante „locations“, müssten diese händisch nachgetragen werden.
 
 .. WARNING::     
 
