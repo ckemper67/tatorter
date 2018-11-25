@@ -129,7 +129,7 @@ def start():
         if selection == 'q':
             sys.exit(0)
         full_target_name = os.path.join(target_path, target_names[selection-1])
-        if Path(full_target_name).is_file():
+        if os.path.isfile(full_target_name):
             selection_text = input("Target file {} exists! Overwrite? (y/n)".format(full_target_name))
             while selection_text.lower() not in ['y','n']:
                 selection_text = input("I just understand 'y' or 'n'. Overwrite? (y/n)".format(full_target_name))
