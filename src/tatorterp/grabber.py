@@ -76,7 +76,7 @@ class WikipdediaDEGrabber(object):
         browser = ms.StatefulBrowser()
         browser.open(WikipdediaDEGrabber.url)
         tables = browser.get_current_page().find_all(name='table', attrs={'class':'wikitable sortable'})
-        assert len(tables) == 2, "Page content unexpected, not exactly two wikitables. Cannot parse it."
+        assert len(tables) == 3, "Page content unexpected, not exactly three wikitables. Cannot parse it."
         tbodys = tables[0].find_all("tbody")
         assert len(tbodys) == 1, "Page content unexpected, more than one tbody in wikitable. Cannot parse it."
         trs = tbodys[0].find_all("tr")
