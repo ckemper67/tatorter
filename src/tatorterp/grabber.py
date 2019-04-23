@@ -84,7 +84,7 @@ class WikipdediaDEGrabber(object):
         self.episodes = []
         last_epsiode = None
         last_values = None
-        season = None
+        season = 1969
         for tr in trs[1:]:
             tds = tr.find_all('td')
             values = [td.text.split('(')[0].strip() for td in tds]
@@ -109,7 +109,7 @@ class WikipdediaDEGrabber(object):
             # strip of trailing [footnote]
             premiere = values[3].split('[')[0]
             year = int(premiere[-4:])
-            if season != year:
+            if year > season:
                 season = year
                 first_episode = episode_index
             episode = Episode(
