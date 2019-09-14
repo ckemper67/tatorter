@@ -89,16 +89,20 @@ class WikipdediaDEGrabber(object):
             tds = tr.find_all('td')
             values = [td.text.split('(')[0].strip() for td in tds]
             episode_index = int(values[0].replace('a*','').replace('b*',''))
-            if episode_index == 835:
-                assert len(values) == 7
-                values[6] = last_epsiode.author
-                values.append(last_epsiode.director)
-            elif episode_index in [854, 970]:
+            if episode_index == 737:
+                # handle '2000i' error in page
+                assert len(values) == 9
+                values[3]=values[3][:-1]
+            elif episode_index in [835]:
+                # handle continuation episodes
                 assert len(values) == 5
-                last_values[1] = values[1]
-                last_values[3] = values[2]
-                last_values[5] = values[3]
-                values = last_values
+                new_values=last_values[:]
+                new_values[0] = values[0]
+                new_values[1] = values[1]
+                new_values[3] = values[2]
+                new_values[5] = values[3]
+                new_values[8] = values[4]
+                values = new_values
             team = values[4]
             if team not in team_to_location:
                 if episode_index > 1100:
