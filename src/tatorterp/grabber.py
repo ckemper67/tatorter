@@ -41,8 +41,11 @@ team_to_location = {
     "Tobler und Berg":"Freiburg",
     "Flückiger und Ritschard":"Luzern",
     "Borowski und Brandt":"Kiel",
+    "Borowski und Sahin":"Kiel",
     "Rubin und Karow":"Berlin",
+    "Faber und Bönisch":"Dortmund",
     "Faber, Bönisch, Dalay und Kossik":"Dortmund",
+    "Faber, Bönisch, Dalay und Pawlak":"Dortmund",
     "Voss, Ringelhahn, Goldwasser, Fleischer und Schatz":"Franken",
     "Blum und Perlmann, Matteo Lüthi":"Konstanz",
     "Blum und Perlmann":"Konstanz",
@@ -76,7 +79,7 @@ class WikipdediaDEGrabber(object):
         browser = ms.StatefulBrowser()
         browser.open(WikipdediaDEGrabber.url)
         tables = browser.get_current_page().find_all(name='table', attrs={'class':'wikitable sortable'})
-        assert len(tables) == 2, "Page content unexpected, not exactly two wikitables. Cannot parse it."
+        assert len(tables) == 3, "Page content unexpected, not exactly three wikitables. Cannot parse it."
         tbodys = tables[0].find_all("tbody")
         assert len(tbodys) == 1, "Page content unexpected, more than one tbody in wikitable. Cannot parse it."
         trs = tbodys[0].find_all("tr")
@@ -84,36 +87,42 @@ class WikipdediaDEGrabber(object):
         self.episodes = []
         last_epsiode = None
         last_values = None
-        season = None
+        episode_count = 0
+        season = 1969
         for tr in trs[1:]:
+            episode_count = episode_count + 1
             tds = tr.find_all('td')
             values = [td.text.split('(')[0].strip() for td in tds]
-            episode_index = int(values[0].replace('a*','').replace('b*',''))
+            try:
+                episode_index = int(values[0].replace('a*','').replace('b*',''))
+            except ValueError:
+                episode_index = episode_count
+                print(episode_count, tds)
             if episode_index == 737:
                 # handle '2000i' error in page
                 assert len(values) == 9
                 values[3]=values[3][:-1]
             elif episode_index in [835]:
                 # handle continuation episodes
-                assert len(values) == 5
+                assert len(values) == 7
                 new_values=last_values[:]
                 new_values[0] = values[0]
                 new_values[1] = values[1]
-                new_values[3] = values[2]
-                new_values[5] = values[3]
-                new_values[8] = values[4]
+                new_values[2] = values[2]
+                new_values[3] = values[3]
+                new_values[4] = values[4]
                 values = new_values
             team = values[4]
             if team not in team_to_location:
-                if episode_index > 800:
-                    logger.warning("Location for team {} unknown and episode later than 800. Script should be updated!".format(team))
+                if episode_index > 1200:
+                    logger.warning("Location for team {} unknown and episode later than 1100. Script should be updated!".format(team))
                 location = "[{}]".format(team)
             else:
                 location = team_to_location[team]
             # strip of trailing [footnote]
             premiere = values[3].split('[')[0]
             year = int(premiere[-4:])
-            if season != year:
+            if year > season:
                 season = year
                 first_episode = episode_index
             episode = Episode(
@@ -132,10 +141,5 @@ class WikipdediaDEGrabber(object):
             self.episodes.append(episode)
             last_epsiode = episode
             last_values = values
-            
-                
-        
-        
-#print (WikipdediaDEGrabber().episodes)
 
-    
+#print (WikipdediaDEGrabber().episodes)
