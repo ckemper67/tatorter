@@ -24,58 +24,76 @@ logger = logging.getLogger("tatorter")
 logging.basicConfig()
 
 team_to_location = {
-    "Faber, Bönisch und Dalay":"Dortmund",
-    "Sieland, Gorniak und Schnabel":"Dresden",
-    "Ballauf und Schenk":"Köln",
-    "Eisner und Fellner":"Wien",
-    "Odenthal und Kopper":"Ludwigshafen",
-    "Stellbrink und Marx":"Saarbrücken",
-    "Lessing und Dorn":"Weimar",
-    "Falke und Grosz":"Hamburg",
-    "Thiel und Boerne":"Münster",
-    "Lindholm":"Hannover",
-    "Janneke und Brix":"Frankfurt",
-    "Lürsen und Stedefreund":"Bremen",
-    "Lannert und Bootz":"Stuttgart",
-    "Batic und Leitmayr":"München",
-    "Tobler und Berg":"Freiburg",
-    "Flückiger und Ritschard":"Luzern",
-    "Borowski und Brandt":"Kiel",
-    "Rubin und Karow":"Berlin",
-    "Faber, Bönisch, Dalay und Kossik":"Dortmund",
-    "Voss, Ringelhahn, Goldwasser, Fleischer und Schatz":"Franken",
-    "Blum und Perlmann, Matteo Lüthi":"Konstanz",
-    "Blum und Perlmann":"Konstanz",
-    "Saalfeld und Keppler":"Leipzig",
-    "Flückiger und Lanning":"Luzern",
-    "Eisner":"Wien",
-    "Ritter und Stark":"Berlin",
-    "Steier und Mey":"Frankfurt",
-    "Murot":"Wiesbaden",
-    "Batu":"Hamburg",
-    "Kappl und Deininger":"Saarbrücken",
-    "Saalfeld und Keppler /Ballauf und Schenk":"Leipzig-Köln",
     "Ballauf und Schenk /Saalfeld und Keppler":"Köln-Leipzig",
-    "Tschiller und Gümer":"Hamburg",
-    "Falke und Lorenz":"Hamburg",
-    "Funck, Schaffert und Grewel":"Erfurt",
-    "Steier":"Frankfurt",
-    "Sieland, Gorniak, Mohr und Schnabel":"Dresden",
-    "Berlinger":"Freiburg",
+    "Ballauf und Schenk":"Köln",
+    "Batic und Leitmayr / Faber": "München-Dortmund",
+    "Batic und Leitmayr":"München",
+    "Batu":"Hamburg",
     "Berlinger und Rascher":"Freiburg",
+    "Berlinger":"Freiburg",
+    "Blum und Perlmann":"Konstanz",
+    "Blum und Perlmann, Matteo Lüthi":"Konstanz",
     "Borowski /Lindholm":"Kiel-Hannover",
-    "Stark":"Berlin",
-    "Schimanski und Thanner":"Duisburg",
+    "Borowski und Brandt":"Kiel",
+    "Borowski und Sahin":"Kiel",
     "Borowski":"Kiel",
-    "Odenthal und Stern":"Ludwigshafen"
-    }
+    "Eisner und Fellner":"Wien",
+    "Eisner":"Wien",
+    "Faber und Bönisch":"Dortmund",
+    "Faber, Bönisch und Dalay":"Dortmund",
+    "Faber, Bönisch, Dalay und Kossik":"Dortmund",
+    "Faber, Bönisch, Dalay und Pawlak / Batic und Leitmayr": "Dortmund-München",
+    "Faber, Bönisch, Dalay und Pawlak":"Dortmund",
+    "Faber, Bönisch, Pawlak und Herzog":"Dortmund",
+    "Faber, Pawlak und Herzog":"Dortmund",
+    "Falke und Grosz":"Hamburg",
+    "Falke und Lorenz":"Hamburg",
+    "Flückiger und Lanning":"Luzern",
+    "Flückiger und Ritschard":"Luzern",
+    "Funck, Schaffert und Grewel":"Erfurt",
+    "Gorniak, Winkler und Schnabel": "Dresden",
+    "Grandjean und Ott": "Zürich",
+    "Janneke und Brix":"Frankfurt",
+    "Kappl und Deininger":"Saarbrücken",
+    "Karow":"Berlin",
+    "Lannert und Bootz":"Stuttgart",
+    "Lessing und Dorn":"Weimar",
+    "Lindholm und Schmitz":"Hannover",
+    "Lindholm":"Hannover",
+    "Lürsen und Stedefreund":"Bremen",
+    "Moormann und Selb":"Bremen",
+    "Moormann, Andersen und Selb": "Bremen",
+    "Murot und Wächter":"Wiesbaden",
+    "Murot":"Wiesbaden",
+    "Odenthal und Kopper":"Ludwigshafen",
+    "Odenthal und Stern":"Ludwigshafen",
+    "Ritter und Stark":"Berlin",
+    "Rubin und Karow":"Berlin",
+    "Saalfeld und Keppler /Ballauf und Schenk":"Leipzig-Köln",
+    "Saalfeld und Keppler":"Leipzig",
+    "Schimanski und Thanner":"Duisburg",
+    "Schürk und Hölzer":"Saarbrücken",
+    "Schürk und Hölzer, Baumann und Heinrich":"Saarbrücken",
+    "Sieland, Gorniak und Schnabel":"Dresden",
+    "Sieland, Gorniak, Mohr und Schnabel":"Dresden",
+    "Stark":"Berlin",
+    "Steier und Mey":"Frankfurt",
+    "Steier":"Frankfurt",
+    "Stellbrink und Marx":"Saarbrücken",
+    "Thiel und Boerne":"Münster",
+    "Tobler und Berg":"Freiburg",
+    "Tschiller und Gümer":"Hamburg",
+    "Voss und Ringelhahn":"Franken",
+    "Voss, Ringelhahn, Goldwasser, Fleischer und Schatz":"Franken",
+}
 
 class WikipdediaDEGrabber(object):
     url = "https://de.wikipedia.org/wiki/Liste_der_Tatort-Folgen"
     def __init__(self):
         browser = ms.StatefulBrowser()
         browser.open(WikipdediaDEGrabber.url)
-        tables = browser.get_current_page().find_all(name='table', attrs={'class':'wikitable sortable'})
+        tables = browser.get_current_page().find_all(name='table',
+                                                     attrs={'class':'wikitable sortable tabelle-kopf-fixiert'})
         assert len(tables) == 3, "Page content unexpected, not exactly three wikitables. Cannot parse it."
         tbodys = tables[0].find_all("tbody")
         assert len(tbodys) == 1, "Page content unexpected, more than one tbody in wikitable. Cannot parse it."
@@ -89,23 +107,9 @@ class WikipdediaDEGrabber(object):
             tds = tr.find_all('td')
             values = [td.text.split('(')[0].strip() for td in tds]
             episode_index = int(values[0].replace('a*','').replace('b*',''))
-            if episode_index == 737:
-                # handle '2000i' error in page
-                assert len(values) == 9
-                values[3]=values[3][:-1]
-            elif episode_index in [835]:
-                # handle continuation episodes
-                assert len(values) == 5
-                new_values=last_values[:]
-                new_values[0] = values[0]
-                new_values[1] = values[1]
-                new_values[3] = values[2]
-                new_values[5] = values[3]
-                new_values[8] = values[4]
-                values = new_values
             team = values[4]
             if team not in team_to_location:
-                if episode_index > 1100:
+                if episode_index > 1400:
                     logger.warning("Location for team {} unknown and episode later than 1100. Script should be updated!".format(team))
                 location = "[{}]".format(team)
             else:
