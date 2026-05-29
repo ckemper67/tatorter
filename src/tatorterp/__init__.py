@@ -16,7 +16,7 @@ Created on 05.02.2018
 
 @author: DLF
 '''
-from fuzzywuzzy import fuzz
+from thefuzz import fuzz
 import os
 
 class Episode(object):

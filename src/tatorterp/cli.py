@@ -26,7 +26,7 @@ import glob
 import sys
 import os
 from tatorterp import Episode, Matcher
-from tatorterp.grabber import WikipdediaDEGrabber
+from tatorterp.grabber import WikipediaDEGrabber
 
 logger = logging.getLogger("tatorter")
 logging.basicConfig()
@@ -95,7 +95,7 @@ def start():
             logger.info("No cache file.")
     if not cache_used:
         logging.info("Fetching online data...")
-        episodes = WikipdediaDEGrabber().episodes
+        episodes = WikipediaDEGrabber().episodes
         logger.info("Storing cache...")
         with open(cache_path,mode="w",encoding="utf-8") as cache_file:
             json.dump([episode.as_dict for episode in episodes], cache_file)
@@ -106,15 +106,18 @@ def start():
         files.extend(glob.glob(f))
     
     # handle each file separately
-    options_count = 5
     for file in files:
         matcher = Matcher(file, episodes)
         source_file = os.path.basename(file)
         target_path = os.path.dirname(file)
         target_extension = os.path.splitext(file)[1]
         target_names = []
+        options_count = min(5, len(matcher.match_list))
+        if options_count == 0:
+            print("No matching episodes found for \"{}\". Skipping.".format(source_file))
+            continue
         print ("="*80)
-        print ("Choose new name for \"{}\"".format(source_file)) 
+        print ("Choose new name for \"{}\"".format(source_file))
         for ix in range(options_count):
             match = matcher.match_list[ix]
             target_name = file_rename_pattern.format(**(match[1].as_dict)) + target_extension
